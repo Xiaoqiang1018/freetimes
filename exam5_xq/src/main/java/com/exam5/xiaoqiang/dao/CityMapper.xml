@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam5.xiaoqiang.dao.CityDAO">
+
+<select id="getCity" parameterType="City" resultType="City">
+    select id,cname name,pid from city where pid=#{pid}
+</select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.exam5.xiaoqiang.dao.CarSchoolDAO">
+    <resultMap id="map1" type="CarSchool">
+        <id property="id" column="id"></id>
+        <result property="subject" column="SUBJECT"/>
+        <result property="comId" column="com_id"/>
+        <result property="price" column="price"/>
+        <result property="date" column="DATE"/>
+        <result property="status" column="STATUS"/>
+        <association property="company" javaType="Company">
+            <id property="id" column="bId"></id>
+            <result property="name" column="bName"></result>
+        </association>
+
+    </resultMap>
+
+    <select id="getCarSchoolList" resultMap="map1" parameterType="CarSchool">
+        SELECT a.id,SUBJECT,com_id,price,DATE,STATUS,b.id bId,b.name bName FROM school a INNER JOIN company b
+        ON a.`com_id`=b.`id`
+        <where>
+            <if test="comId!=null">and com_id=#{comId}</if>
+            <if test="subject!=null and subject!=''">and SUBJECT like concat('%',#{subject},'%')</if>
+            <if test="date!=null">and date &gt;=#{date}</if>
+            <if test="sdate!=null">and date &lt;=#{sdate}</if>
+            <if test="status!=null">and status =#{status}</if>
+        </where>
+    </select>
+
+    <select id="getCarSchoolListById" resultType="CarSchool" parameterType="CarSchool">
+        SELECT a.id,subject ,com_id comId,price,DATE date,status FROM school a where a.id=#{id}
+    </select>
+
+    <update id="updateCarSchoolById" parameterType="CarSchool">
+        update school
+        <set>
+            <if test="comId!=null">com_id=#{comId},</if>
+            <if test="subject!=null and subject!=''">SUBJECT=#{subject},</if>
+            <if test="price !=null">price=#{price},</if>
+            <if test="date!=null">date=#{date},</if>
+            <if test="status!=null">status =#{status},</if>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>
